@@ -112,11 +112,12 @@ class Booker(Base):
         
     def GetAvailableSlots(self, start_time='6pm', end_time='11:59pm', block_slots=''):
         block_slots_set = set()
-        for block_slot in block_slots.split(','):
-            block_court, block_time_str = block_slot.split(' ')
-            block_court = int(block_court)
-            block_time = ParseHourMinute(block_time_str)
-            block_slots_set.add((block_court, block_time))
+        if block_slots:
+            for block_slot in block_slots.split(','):
+                block_court, block_time_str = block_slot.split(' ')
+                block_court = int(block_court)
+                block_time = ParseHourMinute(block_time_str)
+                block_slots_set.add((block_court, block_time))
         tbs = self.b.find_by_xpath('//table[@class=\'tableListNoSort\']//table')
         start_time = ParseHourMinute(start_time)
         end_time = ParseHourMinute(end_time)
@@ -236,4 +237,4 @@ class Booker(Base):
 
 if __name__ == '__main__':
     booker = Booker(multi_window=False)
-    # booker.Run('2021-07-15', '6pm', '7pm')
+    booker.Run('2021-07-24', '6pm', '7pm', do_reserve=False)
